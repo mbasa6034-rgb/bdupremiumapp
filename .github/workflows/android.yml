@@ -38,8 +38,7 @@ jobs:
           // =====================================================
           // CHANGE THE WEBSITE ADDRESS HERE (if it ever changes)
           // =====================================================
-          const String siteUrl = 'https://bdupremiumapp.pages.dev';
-
+          const String siteUrl = 'https://bdupremiumapp.mbasa6034-74e.workers.dev/';
           void main() {
             runApp(const BduPremiumApp());
           }
