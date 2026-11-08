@@ -1,0 +1,18 @@
+name = "bdupremiumapp"
+main = "bdu-premium-worker.js"
+compatibility_date = "2026-01-01"
+
+# D1 database: created in the dashboard as "bdupremiumapp".
+# Replace PASTE_NEW_DATABASE_ID with its Database ID (keep the quote marks).
+[[d1_databases]]
+binding = "DB"
+database_name = "bdupremiumapp"
+database_id = "PASTE_NEW_DATABASE_ID"
+
+[vars]
+ALLOWED_ORIGINS = "https://bdupremiumapp.pages.dev"
+
+# Secrets are NOT stored here. Add them in Cloudflare under Settings -> Variables and Secrets:
+#   TELEGRAM_BOT_TOKEN        from @BotFather
+#   TELEGRAM_ADMIN_IDS        your Telegram numeric ID
+#   TELEGRAM_WEBHOOK_SECRET   any long random text you invent
