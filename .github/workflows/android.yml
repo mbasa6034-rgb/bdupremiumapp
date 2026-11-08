@@ -1,0 +1,109 @@
+name: Build BDU PREMIUM APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Create the Android app
+        run: |
+          flutter create --platforms=android --project-name bdu_premium --org et.bdu.premium .
+          flutter pub add webview_flutter
+
+          # Allow the app to use the internet
+          sed -i 's|<application|<uses-permission android:name="android.permission.INTERNET"/>\n    <application|' android/app/src/main/AndroidManifest.xml
+          sed -i 's|android:label="[^"]*"|android:label="BDU PREMIUM"|' android/app/src/main/AndroidManifest.xml
+
+          # Write the app screen: it opens the BDU PREMIUM website inside the app.
+          mkdir -p lib
+          cat > lib/main.dart << 'EOF'
+          import 'package:flutter/material.dart';
+          import 'package:webview_flutter/webview_flutter.dart';
+
+          // =====================================================
+          // CHANGE THE WEBSITE ADDRESS HERE (if it ever changes)
+          // =====================================================
+          const String siteUrl = 'https://bdupremiumapp.pages.dev';
+
+          void main() {
+            runApp(const BduPremiumApp());
+          }
+
+          class BduPremiumApp extends StatelessWidget {
+            const BduPremiumApp({super.key});
+
+            @override
+            Widget build(BuildContext context) {
+              return MaterialApp(
+                title: 'BDU PREMIUM',
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  colorSchemeSeed: const Color(0xFF1A4FA0),
+                  useMaterial3: true,
+                ),
+                home: const SitePage(),
+              );
+            }
+          }
+
+          class SitePage extends StatefulWidget {
+            const SitePage({super.key});
+
+            @override
+            State<SitePage> createState() => _SitePageState();
+          }
+
+          class _SitePageState extends State<SitePage> {
+            late final WebViewController _controller;
+            bool _loading = true;
+
+            @override
+            void initState() {
+              super.initState();
+              _controller = WebViewController()
+                ..setJavaScriptMode(JavaScriptMode.unrestricted)
+                ..setNavigationDelegate(NavigationDelegate(
+                  onPageFinished: (_) => setState(() => _loading = false),
+                ))
+                ..loadRequest(Uri.parse(siteUrl));
+            }
+
+            @override
+            Widget build(BuildContext context) {
+              return Scaffold(
+                body: SafeArea(
+                  child: Stack(
+                    children: [
+                      WebViewWidget(controller: _controller),
+                      if (_loading) const Center(child: CircularProgressIndicator()),
+                    ],
+                  ),
+                ),
+              );
+            }
+          }
+          EOF
+
+      - name: Build the APK
+        run: flutter build apk --release
+
+      - name: Save the APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: BDU-PREMIUM-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
