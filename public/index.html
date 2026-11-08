@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b2545">
+<title>BDU PREMIUM</title>
+<style>
+  /* =====================================================
+     CHANGE APPLICATION DESIGN AND COLORS HERE
+     ===================================================== */
+  :root {
+    --blue: #1a4fa0;
+    --navy: #0b2545;
+    --light: #e8f1fb;
+    --gold: #c9a227;
+    --white: #ffffff;
+    --text: #1d2a3a;
+    --muted: #6b7a90;
+    --line: #d7e3f3;
+    --danger: #b3261e;
+    --ok: #1e7a4c;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(180deg, var(--light) 0%, #f7faff 60%, var(--white) 100%);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .hidden { display: none !important; }
+
+  /* Header */
+  header {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    color: var(--white);
+    box-shadow: 0 4px 18px rgba(11, 37, 69, 0.25);
+  }
+  .brand { font-weight: 800; letter-spacing: 1.5px; font-size: 18px; flex: 1; }
+  .brand span { color: var(--gold); }
+  .icon-btn {
+    background: rgba(255,255,255,0.15); color: var(--white); border: none;
+    width: 38px; height: 38px; border-radius: 50%; font-size: 18px; cursor: pointer;
+  }
+
+  /* Update banner */
+  .banner {
+    display: flex; align-items: center; gap: 12px;
+    margin: 12px 16px 0; padding: 14px 16px;
+    background: var(--white); border-left: 5px solid var(--gold);
+    border-radius: var(--radius); box-shadow: 0 8px 24px rgba(11, 37, 69, 0.12);
+  }
+  .banner b { color: var(--navy); }
+  .banner p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+  .banner button { white-space: nowrap; }
+
+  main { max-width: 480px; margin: 0 auto; padding: 16px; padding-bottom: 40px; }
+
+  /* Cards and buttons */
+  .card {
+    background: var(--white); border-radius: var(--radius);
+    padding: 18px; margin-bottom: 14px;
+    box-shadow: 0 8px 24px rgba(11, 37, 69, 0.08);
+  }
+  h2 { margin: 0 0 12px; font-size: 19px; color: var(--navy); }
+  h3 { margin: 0 0 8px; font-size: 16px; color: var(--navy); }
+  .muted { color: var(--muted); font-size: 13px; }
+
+  button.primary, button.secondary, button.ghost {
+    width: 100%; padding: 13px 16px; margin-top: 12px;
+    border: none; border-radius: 999px; font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: transform .15s ease, box-shadow .15s ease;
+  }
+  button.primary { background: linear-gradient(135deg, var(--blue), var(--navy)); color: var(--white); }
+  button.secondary { background: var(--white); color: var(--blue); border: 2px solid var(--blue); }
+  button.ghost { background: transparent; color: var(--blue); }
+  button:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(26,79,160,0.25); }
+  button:disabled { opacity: .6; cursor: default; transform: none; box-shadow: none; }
+  .banner button.primary { width: auto; margin: 0; padding: 10px 16px; }
+
+  label { display: block; font-size: 13px; color: var(--muted); margin: 12px 0 4px; }
+  input, select {
+    width: 100%; padding: 12px 14px; font-size: 15px;
+    border: 1px solid var(--line); border-radius: 12px; background: var(--white);
+  }
+  input:focus, select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,79,160,0.15); }
+
+  .msg { min-height: 20px; margin-top: 10px; font-size: 14px; }
+  .msg.error { color: var(--danger); }
+  .msg.ok { color: var(--ok); }
+
+  /* List items */
+  .item {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 14px 16px; margin-bottom: 10px; border-radius: 14px;
+    background: var(--light); cursor: pointer; font-weight: 600; color: var(--navy);
+    transition: transform .15s ease;
+  }
+  .item:hover { transform: translateX(3px); }
+  .item small { display: block; font-weight: 400; color: var(--muted); }
+  .item .arrow { color: var(--blue); font-size: 20px; }
+  .item.locked { opacity: .85; }
+
+  .badge {
+    display: inline-block; padding: 5px 12px; border-radius: 999px;
+    font-size: 12px; font-weight: 700; letter-spacing: .5px;
+    background: var(--gold); color: var(--navy);
+  }
+  .badge.free { background: var(--light); color: var(--blue); }
+
+  .note { line-height: 1.7; }
+  .note h1, .note h2, .note h3 { color: var(--navy); }
+  .note table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  .note td, .note th { border: 1px solid var(--line); padding: 6px; text-align: left; }
+
+  .crumb { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+  .empty { text-align: center; color: var(--muted); padding: 24px 0; }
+  .spinner {
+    width: 32px; height: 32px; margin: 30px auto; border-radius: 50%;
+    border: 3px solid var(--line); border-top-color: var(--blue);
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<header>
+  <button id="backBtn" class="icon-btn hidden" aria-label="Back">&larr;</button>
+  <div class="brand">BDU <span>PREMIUM</span></div>
+  <button id="refreshBtn" class="icon-btn" aria-label="Refresh">&#x21bb;</button>
+</header>
+
+<div id="banner" class="banner hidden">
+  <div style="flex:1">
+    <b>&#10024; New BDU PREMIUM update available!</b>
+    <p>New notes, exams and improvements are ready.</p>
+  </div>
+  <button id="refreshNow" class="primary">REFRESH NOW</button>
+</div>
+
+<main id="app"></main>
+
+<script>
+/* =====================================================
+   SETTINGS
+   API_BASE is your Worker address. Change it only if you
+   create a new Worker.
+   ===================================================== */
+const API_BASE = 'https://bdupremiumapp.mbasa6034-74e.workers.dev';
+
+/* =====================================================
+   PAYMENT DETAILS SHOWN TO STUDENTS
+   ADD YOUR REAL ACCOUNT DETAILS HERE. Keep the method names
+   the same as in the Worker (telebirr, cbe_birr, cbe_bank, bank_transfer).
+   ===================================================== */
+const PAYMENT_METHODS = [
+  { key: 'telebirr',      label: 'Telebirr',        info: 'Send to: ADD YOUR TELEBIRR NUMBER HERE' },
+  { key: 'cbe_birr',      label: 'CBE Birr',        info: 'Send to: ADD YOUR CBE BIRR NUMBER HERE' },
+  { key: 'cbe_bank',      label: 'CBE Bank transfer', info: 'Account: ADD YOUR CBE ACCOUNT NUMBER HERE' },
+  { key: 'bank_transfer', label: 'Other bank transfer', info: 'Account: ADD YOUR BANK ACCOUNT HERE' },
+];
+const PREMIUM_PRICE_TEXT = 'ADD YOUR PRICE HERE (for example: 200 ETB)';
+
+/* ===================================================== */
+const TOKEN_KEY = 'bdu_token';
+const VERSION_KEY = 'bdu_content_version';
+const app = document.getElementById('app');
+const backBtn = document.getElementById('backBtn');
+const banner = document.getElementById('banner');
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const spinner = '<div class="spinner"></div>';
+
+// ---------- Network helper ----------
+async function api(path, options = {}) {
+  const headers = { ...(options.headers || {}) };
+  if (!(options.body instanceof FormData)) headers['Content-Type'] = 'application/json';
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  try {
+    const res = await fetch(API_BASE + path, { ...options, headers });
+    const data = await res.json().catch(() => ({}));
+    return { status: res.status, data };
+  } catch (e) {
+    return { status: 0, data: { ok: false, error: 'No internet connection. Please try again.' } };
+  }
+}
+
+// ---------- Navigation with Back button ----------
+const history_ = [];
+function navigate(fn, ...args) {
+  history_.push({ fn, args });
+  render();
+}
+function render() {
+  const top = history_[history_.length - 1];
+  backBtn.classList.toggle('hidden', history_.length <= 1);
+  top.fn(...top.args);
+}
+backBtn.addEventListener('click', () => {
+  history_.pop();
+  if (history_.length === 0) return home();
+  render();
+});
+
+// Always show the login screen first, then home once logged in.
+function resetTo(fn, ...args) {
+  history_.length = 0;
+  navigate(fn, ...args);
+}
+
+// ---------- Refresh and updates ----------
+async function checkForUpdate() {
+  const { data } = await api('/api/version');
+  if (!data.ok) return;
+  const current = String(data.version);
+  const saved = localStorage.getItem(VERSION_KEY);
+  if (saved === null) {
+    localStorage.setItem(VERSION_KEY, current);
+  } else if (saved !== current) {
+    banner.classList.remove('hidden');
+  }
+}
+document.getElementById('refreshBtn').addEventListener('click', () => location.reload());
+document.getElementById('refreshNow').addEventListener('click', async () => {
+  const { data } = await api('/api/version');
+  if (data.ok) localStorage.setItem(VERSION_KEY, String(data.version));
+  location.reload();
+});
+
+// ---------- Auth screens ----------
+function authView(mode = 'login') {
+  const isLogin = mode === 'login';
+  app.innerHTML = `
+    <div class="card">
+      <h2>${isLogin ? 'Log in' : 'Create your account'}</h2>
+      ${isLogin ? '' : `
+        <label>Full name</label><input id="f_name" type="text" autocomplete="name">
+        <label>University</label><input id="f_uni" type="text" value="Bahir Dar University">
+        <label>Campus</label><input id="f_campus" type="text" value="BiT (Poly Campus)">
+      `}
+      <label>Phone number</label><input id="f_phone" type="tel" placeholder="09XXXXXXXX" autocomplete="tel">
+      <label>Password</label><input id="f_pass" type="password" autocomplete="${isLogin ? 'current-password' : 'new-password'}">
+      ${isLogin ? '' : `<label>Confirm password</label><input id="f_confirm" type="password" autocomplete="new-password">`}
+      <button class="primary" id="authBtn">${isLogin ? 'LOG IN' : 'SIGN UP'}</button>
+      <div id="authMsg" class="msg"></div>
+      <div class="muted" style="text-align:center;margin-top:14px">
+        ${isLogin
+          ? 'New student? <a href="#" id="toSignup" style="color:var(--blue);font-weight:700">Create an account</a>'
+          : 'Already registered? <a href="#" id="toLogin" style="color:var(--blue);font-weight:700">Log in</a>'}
+      </div>
+    </div>`;
+  const msg = (t, ok = false) => { const el = document.getElementById('authMsg'); el.textContent = t; el.className = 'msg ' + (ok ? 'ok' : 'error'); };
+  document.getElementById('toSignup')?.addEventListener('click', (e) => { e.preventDefault(); resetTo(authView, 'signup'); });
+  document.getElementById('toLogin')?.addEventListener('click', (e) => { e.preventDefault(); resetTo(authView, 'login'); });
+  document.getElementById('authBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('authBtn');
+    btn.disabled = true;
+    let res;
+    if (isLogin) {
+      res = await api('/api/auth/login', { method: 'POST', body: JSON.stringify({
+        phone: v('f_phone'), password: v('f_pass') }) });
+    } else {
+      res = await api('/api/auth/signup', { method: 'POST', body: JSON.stringify({
+        full_name: v('f_name'), university: v('f_uni'), campus: v('f_campus'),
+        phone: v('f_phone'), password: v('f_pass'), confirm_password: v('f_confirm') }) });
+    }
+    btn.disabled = false;
+    if (!res.data.ok) return msg(res.data.error || 'Something went wrong.');
+    localStorage.setItem(TOKEN_KEY, res.data.token);
+    msg(isLogin ? 'Welcome back!' : 'Account created!', true);
+    setTimeout(() => resetTo(home), 400);
+  });
+}
+const v = (id) => document.getElementById(id).value.trim();
+
+// ---------- Home (programs) ----------
+async function home() {
+  app.innerHTML = spinner;
+  const status = await api('/api/premium/status');
+  if (!status.data.authenticated) { localStorage.removeItem(TOKEN_KEY); return resetTo(authView, 'login'); }
+  const programs = await api('/api/programs');
+  const list = programs.data.ok && programs.data.programs.length
+    ? programs.data.programs.map((p) => `
+        <div class="item" onclick="navigate(streamsView, '${esc(p.id)}', '${esc(p.name)}')">
+          <span>${esc(p.name)}</span><span class="arrow">&rsaquo;</span>
+        </div>`).join('')
+    : '<div class="empty">No programs have been added yet.</div>';
+  app.innerHTML = `
+    <div class="card">
+      <h2>Welcome</h2>
+      ${status.data.premium
+        ? '<span class="badge">PREMIUM ACTIVE</span>'
+        : '<span class="badge free">FREE ACCOUNT &middot; Chapter 1 of each course is free</span>'}
+      ${status.data.premium ? '' : '<button class="primary" onclick="navigate(paymentView)">UNLOCK PREMIUM</button>'}
+    </div>
+    <div class="card"><h2>PREMIUM NOTE</h2>${list}</div>
+    <div class="card"><button class="secondary" onclick="navigate(accountView)">My account</button></div>`;
+  checkForUpdate();
+}
+
+// ---------- Course navigation ----------
+async function streamsView(programId, programName) {
+  app.innerHTML = `<div class="crumb">${esc(programName)}</div>` + spinner;
+  const { data } = await api('/api/streams?program=' + encodeURIComponent(programId));
+  app.innerHTML = `<div class="crumb">${esc(programName)}</div><div class="card"><h2>Choose your stream</h2>` +
+    (data.ok && data.streams.length
+      ? data.streams.map((s) => `<div class="item" onclick="navigate(semestersView, '${esc(s.id)}', '${esc(s.name)}')"><span>${esc(s.name)}</span><span class="arrow">&rsaquo;</span></div>`).join('')
+      : '<div class="empty">No streams yet.</div>') + '</div>';
+}
+async function semestersView(streamId, streamName) {
+  app.innerHTML = `<div class="crumb">${esc(streamName)}</div>` + spinner;
+  const { data } = await api('/api/semesters?stream=' + encodeURIComponent(streamId));
+  app.innerHTML = `<div class="crumb">${esc(streamName)}</div><div class="card"><h2>Semesters</h2>` +
+    (data.ok && data.semesters.length
+      ? data.semesters.map((s) => `<div class="item" onclick="navigate(coursesView, '${esc(s.id)}', '${esc(s.name)}')"><span>${esc(s.name)}</span><span class="arrow">&rsaquo;</span></div>`).join('')
+      : '<div class="empty">No semesters yet.</div>') + '</div>';
+}
+async function coursesView(semesterId, semesterName) {
+  app.innerHTML = `<div class="crumb">${esc(semesterName)}</div>` + spinner;
+  const { data } = await api('/api/courses?semester=' + encodeURIComponent(semesterId));
+  app.innerHTML = `<div class="crumb">${esc(semesterName)}</div><div class="card"><h2>Courses</h2>` +
+    (data.ok && data.courses.length
+      ? data.courses.map((c) => `<div class="item" onclick="navigate(chaptersView, '${esc(c.id)}', '${esc(c.name)}')"><span>${esc(c.name)}</span><span class="arrow">&rsaquo;</span></div>`).join('')
+      : '<div class="empty">No courses yet.</div>') + '</div>';
+}
+async function chaptersView(courseId, courseName) {
+  app.innerHTML = `<div class="crumb">${esc(courseName)}</div>` + spinner;
+  const { data } = await api('/api/chapters?course=' + encodeURIComponent(courseId));
+  const items = data.ok && data.chapters.length
+    ? data.chapters.map((c) => `
+        <div class="item ${c.locked ? 'locked' : ''}" onclick="navigate(noteView, '${esc(c.id)}', '${esc(c.title)}')">
+          <span>Chapter ${esc(c.number)}: ${esc(c.title)}
+            <small>${c.locked ? 'Premium chapter' : 'Free'}</small></span>
+          <span class="arrow">${c.locked ? '&#128274;' : '&rsaquo;'}</span>
+        </div>`).join('')
+    : '<div class="empty">No chapters yet.</div>';
+  app.innerHTML = `<div class="crumb">${esc(courseName)}</div><div class="card"><h2>Chapters</h2>${items}</div>`;
+}
+
+// ---------- Reading a note (server decides if it is allowed) ----------
+async function noteView(chapterId, chapterTitle) {
+  app.innerHTML = `<div class="crumb">${esc(chapterTitle)}</div>` + spinner;
+  const { status, data } = await api('/api/notes?chapter=' + encodeURIComponent(chapterId));
+  if (status === 402) {
+    app.innerHTML = `
+      <div class="card" style="text-align:center">
+        <h2>&#128274; Premium chapter</h2>
+        <p class="muted">Unlock premium to read this chapter and all other premium notes.</p>
+        <button class="primary" onclick="navigate(paymentView)">UNLOCK PREMIUM</button>
+      </div>`;
+    return;
+  }
+  if (!data.ok) {
+    app.innerHTML = `<div class="card"><div class="msg error">${esc(data.error || 'Could not load this note.')}</div></div>`;
+    return;
+  }
+  const body = data.note.body_html && data.note.body_html.trim()
+    ? data.note.body_html
+    : '<div class="empty">This note has not been added yet.</div>';
+  app.innerHTML = `<div class="crumb">${esc(chapterTitle)}</div><div class="card note">${body}</div>`;
+}
+
+// ---------- Premium payment ----------
+async function paymentView() {
+  app.innerHTML = spinner;
+  const { data } = await api('/api/payment/status');
+  const last = data.payment;
+
+  if (last && last.status === 'pending') {
+    app.innerHTML = `
+      <div class="card" style="text-align:center">
+        <h2>Payment received</h2>
+        <p class="muted">Your receipt is waiting for admin approval. This usually takes a short time.</p>
+        <button class="secondary" onclick="navigate(paymentView)">CHECK STATUS</button>
+      </div>`;
+    return;
+  }
+
+  const options = PAYMENT_METHODS.map((m) => `<option value="${m.key}">${esc(m.label)}</option>`).join('');
+  app.innerHTML = `
+    <div class="card">
+      <h2>UNLOCK PREMIUM</h2>
+      <p class="muted">${esc(PREMIUM_PRICE_TEXT)}</p>
+      <label>1. Choose how you paid</label>
+      <select id="p_method">${options}</select>
+      <div id="p_info" class="muted" style="margin-top:8px"></div>
+      <label>2. Transaction reference (from your payment receipt)</label>
+      <input id="p_ref" type="text" placeholder="e.g. CE7X9K2M1L">
+      <label>3. Screenshot of your receipt (under 1 MB)</label>
+      <input id="p_file" type="file" accept="image/*">
+      <button class="primary" id="p_submit">SUBMIT RECEIPT</button>
+      <div id="p_msg" class="msg"></div>
+      <p class="muted" style="margin-top:12px">Never share your bank PIN, card PIN or password with anyone.</p>
+    </div>`;
+
+  const showInfo = () => {
+    const m = PAYMENT_METHODS.find((x) => x.key === document.getElementById('p_method').value);
+    document.getElementById('p_info').textContent = m ? m.info : '';
+  };
+  document.getElementById('p_method').addEventListener('change', showInfo);
+  showInfo();
+
+  const msg = (t, ok = false) => { const el = document.getElementById('p_msg'); el.textContent = t; el.className = 'msg ' + (ok ? 'ok' : 'error'); };
+  document.getElementById('p_submit').addEventListener('click', async () => {
+    const file = document.getElementById('p_file').files[0];
+    const ref = v('p_ref');
+    if (!ref) return msg('Enter the transaction reference.');
+    if (!file) return msg('Choose a screenshot of your receipt.');
+    if (file.size > 1024 * 1024) return msg('That image is too large. Use a smaller screenshot (under 1 MB).');
+    const form = new FormData();
+    form.append('method', document.getElementById('p_method').value);
+    form.append('reference', ref);
+    form.append('receipt', file);
+    const btn = document.getElementById('p_submit');
+    btn.disabled = true; msg('Sending...', true);
+    const { data } = await api('/api/receipt', { method: 'POST', body: form });
+    btn.disabled = false;
+    if (!data.ok) return msg(data.error || 'Could not send. Try again.');
+    msg('Receipt sent. Waiting for approval.', true);
+    setTimeout(() => navigate(paymentView), 800);
+  });
+}
+
+// ---------- Account ----------
+async function accountView() {
+  app.innerHTML = spinner;
+  const status = await api('/api/premium/status');
+  app.innerHTML = `
+    <div class="card">
+      <h2>My account</h2>
+      <p>${status.data.premium ? '<span class="badge">PREMIUM ACTIVE</span>' : '<span class="badge free">FREE ACCOUNT</span>'}</p>
+      ${status.data.premium ? '' : '<button class="primary" onclick="navigate(paymentView)">UNLOCK PREMIUM</button>'}
+      <button class="secondary" id="logoutBtn">LOG OUT</button>
+    </div>`;
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await api('/api/auth/logout', { method: 'POST' });
+    localStorage.removeItem(TOKEN_KEY);
+    resetTo(authView, 'login');
+  });
+}
+
+// Make the view functions reachable from the buttons written in HTML.
+Object.assign(window, { navigate, streamsView, semestersView, coursesView, chaptersView, noteView, paymentView, accountView, authView, home });
+
+// ---------- Start ----------
+(function start() {
+  if (localStorage.getItem(TOKEN_KEY)) resetTo(home);
+  else resetTo(authView, 'login');
+})();
+</script>
+</body>
+</html>
