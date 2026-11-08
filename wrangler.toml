@@ -16,3 +16,6 @@ ALLOWED_ORIGINS = "https://bdupremiumapp.pages.dev"
 #   TELEGRAM_BOT_TOKEN        from @BotFather
 #   TELEGRAM_ADMIN_IDS        your Telegram numeric ID
 #   TELEGRAM_WEBHOOK_SECRET   any long random text you invent
+[assets]
+directory = "./public"
+binding = "ASSETS"
