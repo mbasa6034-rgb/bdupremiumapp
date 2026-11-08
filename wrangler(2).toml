@@ -7,7 +7,7 @@ compatibility_date = "2026-01-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "bdupremiumapp"
-database_id = "PASTE_NEW_DATABASE_ID"
+database_id = "ab9c9e4c-474e-4b0f-a3bb-284184419585"
 
 [vars]
 ALLOWED_ORIGINS = "https://bdupremiumapp.pages.dev"
